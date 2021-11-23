@@ -38,3 +38,8 @@ ARG BUILDARCH
 RUN echo "I am running on $BUILDPLATFORM, building for $TARGETPLATFORM $TARGETARCH $TARGETVARIANT"  
 
 ENTRYPOINT ["/app/fake-service"]
+
+FROM base as dev
+COPY bin/linux/amd64/fake-service /app/fake-service
+RUN chmod +x /app/fake-service
+ENTRYPOINT ["/app/fake-service"]

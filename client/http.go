@@ -89,8 +89,18 @@ func appendHeaders(r, pr *http.Request) {
 	}
 }
 
-// appendPath from the original request to this request
+// appendPath and query params from the original request to this request
 func appendPath(r, pr *http.Request) {
 	op := pr.URL.Path
 	r.URL.Path = r.URL.Path + op
+
+	// Add any query params from original request.
+	// Give precedence to query params on this request though.
+	queryValues := r.URL.Query()
+	for k, v := range pr.URL.Query() {
+		if queryValues.Get(k) == "" {
+			queryValues.Set(k, v[0])
+		}
+	}
+	r.URL.RawQuery = queryValues.Encode()
 }
