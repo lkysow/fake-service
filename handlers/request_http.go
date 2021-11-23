@@ -87,6 +87,7 @@ func (rq *Request) Handle(rw http.ResponseWriter, r *http.Request) {
 	resp.Type = "HTTP"
 	resp.URI = r.URL.String()
 	resp.IPAddresses = getIPInfo()
+	resp.Headers["Cache-Control"] = "no-store"
 
 	// are we injecting errors, if so return the error
 	if er := rq.errorInjector.Do(); er != nil {
